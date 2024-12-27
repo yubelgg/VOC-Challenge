@@ -1,6 +1,9 @@
 import os
 
+import matplotlib.pyplot as plt
 import numpy as np
+
+# import seaborn as sns
 from PIL import Image
 
 
@@ -33,7 +36,7 @@ def load_voc_data(path, classes, split="train"):
     for cls_idx, cls in enumerate(classes):
         file_name = f"{cls}_{split}.txt"
         file_path = os.path.join(image_set_path, file_name)
-        print("current class...", cls)
+        # print("current class...", cls)
 
         # open the current file
         with open(file_path, "r") as f:
@@ -60,7 +63,7 @@ def load_voc_data(path, classes, split="train"):
     labels = np.array(list(labels.values()))
     # print(f"length of {split} dataset...", len(dataset))
     # print(f"length of {split} labels...", len(labels))
-    print(labels)
+    # print(labels)
     return dataset, labels
 
 
@@ -70,3 +73,24 @@ classes = ["bicycle", "motorbike", "person", "cat", "train"]
 
 train_images, train_labels = load_voc_data(file_dir, classes, "train")
 val_images, val_labels = load_voc_data(file_dir, classes, "val")
+
+
+def EDA(labels, classes, split):
+    """
+    perform data analysis
+    """
+    class_count = labels.sum(axis=0)
+    print(f"class distribution in {split}:")
+    for cls, count in zip(classes, class_count):
+        print(f"{cls:10}: {int(count):4d} Images")
+
+    plt.figure(figsize=(10, 5))
+    plt.bar(classes, class_count)
+    plt.title(f"class distribution for {split}")
+    plt.ylabel("no. of Images")
+    plt.tight_layout()
+    plt.show()
+
+
+EDA(train_labels, classes, "train")
+EDA(val_labels, classes, "val")
