@@ -2,4 +2,3 @@
 .mypy_cache/*
 .vscode/*
 runs/*
-VOCdevkit/VOC2012/*
